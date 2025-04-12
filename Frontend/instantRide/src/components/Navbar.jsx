@@ -29,7 +29,7 @@ const Navbar = () => {
       {/* LEFT: Logo */}
       <div className="flex flex-row">
         <a className="btn btn-ghost text-xl border-none bg-slate-100 hover:bg-slate-200 hidden md:flex">
-          CabiGo
+          Orvian
         </a>
         <LiveLocation />
       </div>
