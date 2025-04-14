@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import list from "../../public/list.json";
+// import list from "../../public/list.json";
+import axios from "axios";
 import Cards from "./Cards";
 import Navbar from "./Navbar";
 import Shed1 from "../../public/Shed1.png";
@@ -10,10 +11,22 @@ import Shed1 from "../../public/Shed1.png";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaLocationArrow } from "react-icons/fa";
 const ScheduledRide = () => {
-  const filterData = list.filter((data) => data.category === "Bbike");
-  const filterDataCar = list.filter((data) => data.category === "Bcar");
-  const filterDataAuto = list.filter((data) => data.category === "Bauto");
-  const filterDataTaxi = list.filter((data) => data.category === "Btaxi");
+  const [Card, setCard] = useState([]);
+  useEffect(() => {
+    const getCard = async () => {
+      try {
+        const res = await axios.get("http://localhost:4001/bookingcard");
+        setCard(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCard();
+  }, []);
+  const filterData = Card.filter((data) => data.category === "Bbike");
+  const filterDataCar = Card.filter((data) => data.category === "Bcar");
+  const filterDataAuto = Card.filter((data) => data.category === "Bauto");
+  const filterDataTaxi = Card.filter((data) => data.category === "Btaxi");
   var settings = {
     dots: true,
     infinite: false,
@@ -48,6 +61,7 @@ const ScheduledRide = () => {
       },
     ],
   };
+
   return (
     <>
       <Navbar />
@@ -58,7 +72,7 @@ const ScheduledRide = () => {
           </div>
           <div>
             <div className="mt-10  flex flex-col gap-[20px] w-full max-w-md ">
-            <input type="datetime-local" className="input"/>
+              <input type="datetime-local" className="input" />
               <label className="input">
                 <input
                   type="search"
@@ -91,7 +105,7 @@ const ScheduledRide = () => {
         </div>
       </div>
       <div className="max-w-screen-2xl container mx-auto md:px-25 px-4">
-        <div>Book Now Ride Later</div>
+        <div>Book Bike Now Ride Later</div>
         <div>
           <Slider {...settings}>
             {filterData.map((item) => (
@@ -99,7 +113,7 @@ const ScheduledRide = () => {
             ))}
           </Slider>
         </div>
-        <div>Book Now Ride Later</div>
+        <div>Book Car Now Ride Later</div>
         <div>
           <Slider {...settings}>
             {filterDataCar.map((item) => (
@@ -107,7 +121,7 @@ const ScheduledRide = () => {
             ))}
           </Slider>
         </div>
-        <div>Book Now Ride Later</div>
+        <div>Book Auto Now Ride Later</div>
         <div>
           <Slider {...settings}>
             {filterDataAuto.map((item) => (
@@ -115,7 +129,7 @@ const ScheduledRide = () => {
             ))}
           </Slider>
         </div>
-        <div>Book Now Ride Later</div>
+        <div>Book Taxi Now Ride Later</div>
         <div>
           <Slider {...settings}>
             {filterDataTaxi.map((item) => (

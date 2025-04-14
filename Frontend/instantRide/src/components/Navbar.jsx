@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import LiveLocation from "./LiveLocation";
+import Login from "./Login";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
+import Logout from "./Logout";
 
 const Navbar = () => {
+  const [authUser, setAuthUser] = useAuth();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -31,7 +35,6 @@ const Navbar = () => {
         <a className="btn btn-ghost text-xl border-none bg-slate-100 hover:bg-slate-200 hidden md:flex">
           Orvian
         </a>
-        <LiveLocation />
       </div>
 
       {/* CENTER: Navigation Buttons */}
@@ -65,31 +68,20 @@ const Navbar = () => {
       </div>
 
       {/* Login / Signup */}
-      <div>
-        <button
-          className="btn bg-slate-100 hover:bg-slate-200 gap-2 mx-3 border-none text-green-500"
-          onClick={() => document.getElementById("my_modal_2").showModal()}
-        >
-          <span>Login</span>
-          <span>|</span>
-          <span>SignUp</span>
-        </button>
-        <dialog id="my_modal_2" className="modal">
-          <div className="modal-box">
-            <button
-              onClick={() => document.getElementById("my_modal_2").close()}
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-              ✕
-            </button>
-            <h3 className="font-bold text-lg">Hello!</h3>
-            <p className="py-4">Press ESC key or click outside to close</p>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      </div>
+      {authUser ? (
+        <Logout />
+      ) : (
+        <div>
+          <Link
+            to="/login"
+            className="btn bg-slate-100 hover:bg-slate-200 gap-2 mx-3 border-none text-green-500"
+          >
+            <span>Login</span>
+            <span>|</span>
+            <span>Signup</span>
+          </Link>
+        </div>
+      )}
 
       {/* RIGHT: Avatar Dropdown */}
       <div className="flex-none justify-end flex">
@@ -110,6 +102,9 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
           >
+            <li>
+              <a>Home Page</a>
+            </li>
             <li>
               <a>My Rides</a>
             </li>
